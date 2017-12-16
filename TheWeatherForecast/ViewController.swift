@@ -23,7 +23,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func getWeatherBtn(_ sender: UIButton) {
         
-        if let url = URL(string: "http://www.weather-forecast.com/locations/" + locationTxtField.text! + "/forecasts/latest") {
+        if let url = URL(string: "http://www.weather-forecast.com/locations/" + locationTxtField.text!.replacingOccurrences(of: " ", with: "-") + "/forecasts/latest") {
             
             let request = NSMutableURLRequest(url: url)
             var webMessage = ""
@@ -40,11 +40,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
                         
                         if let contentArray = dataString?.components(separatedBy: stringSeparator) {
                             
-                            if contentArray.count > 0 {
+                            if contentArray.count > 1 {
                                 stringSeparator = "</span>"
                                 let newContentArray = contentArray[1].components(separatedBy: stringSeparator)
                                 
-                                if newContentArray.count > 0 {
+                                if newContentArray.count > 1 {
                                     webMessage = newContentArray[0].replacingOccurrences(of: "&deg;", with: "º")
                                 }
                                 
@@ -61,6 +61,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 }
             }
             task.resume()
+        } else {
+            message.text = "Unable to get the weather"
         }
     }
     
