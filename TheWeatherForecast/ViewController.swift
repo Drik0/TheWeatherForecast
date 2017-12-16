@@ -37,12 +37,17 @@ class ViewController: UIViewController/*, UITextFieldDelegate*/ {
                              stringSeparator = "</span>"
                                 let newContentArray = contentArray[1].components(separatedBy: stringSeparator)
                                 if newContentArray.count > 0 {
-                                    webMessage = newContentArray[0]
-                                    print(webMessage)
+                                    webMessage = newContentArray[0].replacingOccurrences(of: "&deg;", with: "º")
                                 }
                                 
                             }
                         }
+                    }
+                    if webMessage == "" {
+                        webMessage = "Unable to get the weather"
+                    }
+                    DispatchQueue.main.sync {
+                        self.message.text = webMessage
                     }
                 }
             }
